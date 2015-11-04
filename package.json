@@ -5,6 +5,9 @@
   "main": "index.js",
   "repository": "",
   "license": "Proprietary",
+  "engines" :{
+    "node": "0.12.7"
+  },
   "private": true,
   "scripts": {
     "start": "node index.js"
