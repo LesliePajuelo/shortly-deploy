@@ -3,6 +3,19 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options:{
+        //seperator (possibly need comma)
+        seperator: ';'
+      },
+      client:{
+        src:['public/client/*.js'],
+        dest: 'dist/concatclient.js'
+        //files we want to concatenate
+      },
+      lib:{
+        src:['public/lib/*.js'],
+        dest: 'dist/concatlib.js'
+      }
     },
 
     mochaTest: {
@@ -20,12 +33,23 @@ module.exports = function(grunt) {
       }
     },
 
+    //Need clarity on the structure of uglify command (object, containing an array, containing dest + src files)
     uglify: {
+      options: {},
+      dist:{
+        files:[
+          {
+            'dist/uglyclient.js': ['dist/concatclient.js'],
+            'dist/uglylib.js': ['dist/concatlib.js']
+          }
+        ]
+      }, 
     },
 
     jshint: {
       files: [
         // Add filespec list here
+        'dist/concatclient.js'
       ],
       options: {
         force: 'true',
@@ -38,6 +62,13 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      target:{
+        files:
+          [{
+            src:['public/style.css'],
+            dest:'dist/style.min.css'
+          }]
+      }
     },
 
     watch: {
@@ -56,9 +87,11 @@ module.exports = function(grunt) {
         tasks: ['cssmin']
       }
     },
-
+    //used to run a cron task
     shell: {
       prodServer: {
+        command: 'git push heroku master'
+
       }
     },
   });
@@ -94,11 +127,19 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'concat',
+    'uglify',
+    'cssmin'
   ]);
+
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
+      'test'
+      'build'
+      'shell'
+
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -106,6 +147,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+      'watch'  
   ]);
 
 
