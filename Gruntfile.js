@@ -128,17 +128,28 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'concat',
+    'jshint',
     'uglify',
     'cssmin'
   ]);
+
+  grunt.registerTask('production', [
+    'test',
+    'build',
+    'shell'
+  ]);
+
+  grunt.registerTask('localserver', [
+    'test',
+    'build',
+    ])
 
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
-      'test'
-      'build'
       'shell'
+      console.log('Pushed to Heroku');
 
     } else {
       grunt.task.run([ 'server-dev' ]);
@@ -146,9 +157,22 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
+
     // add your deploy tasks here
-      'watch'  
+    'test',
+    'build',
+    'shell'
   ]);
+
+  // grunt.registerTask('deploy', function(n){
+  //   if (grunt.option('production')){
+  //     'production'
+  //   };
+  //   if (grunt.option('localserver')){
+  //     'localserver',
+  //     'server-dev'
+  //   }
+  // });
 
 
 };
