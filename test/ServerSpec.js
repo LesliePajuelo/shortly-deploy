@@ -217,6 +217,7 @@ describe('', function() {
     });
 
     it('Logs in existing users', function(done) {
+      console.log(req.session.user)
       request(app)
         .post('/login')
         .send({
@@ -227,6 +228,7 @@ describe('', function() {
           expect(res.headers.location).to.equal('/');
         })
         .end(done);
+        console.log(req.session.user)
     });
 
     it('Users that do not exist are kept on login page', function(done) {

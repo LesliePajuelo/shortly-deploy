@@ -9,8 +9,8 @@ var userSchema = mongoose.Schema ({
 });
 
 var User = mongoose.model('User', userSchema);
-
-User.comparePassword = function(attemptedPassword, savedPassword, callback) {
+                                                    //SAM had type as savedPassword
+User.comparePassword = function(attemptedPassword, savePassword, callback) {
     bcrypt.compare(attemptedPassword, savePassword, function(err, isMatch) {
       callback(isMatch);
     });
